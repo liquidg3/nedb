@@ -2773,7 +2773,7 @@
       };
 
       comparisonFunctions.$regex = function (a, b) {
-        if (!util.isRegExp(b)) { throw new Error("$regex operator called with non regular expression"); }
+        if (!(b instanceof RegExp)) { throw new Error("$regex operator called with non regular expression"); }
 
         if (typeof a !== 'string') {
           return false
@@ -2931,7 +2931,7 @@
           }
 
           // Check if we are using an array-specific comparison function
-          if (queryValue !== null && typeof queryValue === 'object' && !util.isRegExp(queryValue)) {
+          if (queryValue !== null && typeof queryValue === 'object' && !(queryValue instanceof RegExp)) {
             keys = Object.keys(queryValue);
             for (i = 0; i < keys.length; i += 1) {
               if (arrayComparisonFunctions[keys[i]]) { return matchQueryPart(obj, queryKey, queryValue, true); }
@@ -2947,7 +2947,7 @@
 
         // queryValue is an actual object. Determine whether it contains comparison operators
         // or only normal fields. Mixed objects are not allowed
-        if (queryValue !== null && typeof queryValue === 'object' && !util.isRegExp(queryValue) && !Array.isArray(queryValue)) {
+        if (queryValue !== null && typeof queryValue === 'object' && !(queryValue instanceof RegExp) && !Array.isArray(queryValue)) {
           keys = Object.keys(queryValue);
           firstChars = _.map(keys, function (item) { return item[0]; });
           dollarFirstChars = _.filter(firstChars, function (c) { return c === '$'; });
@@ -2968,7 +2968,7 @@
         }
 
         // Using regular expressions with basic querying
-        if (util.isRegExp(queryValue)) { return comparisonFunctions.$regex(objValue, queryValue); }
+        if ((queryValue instanceof RegExp)) { return comparisonFunctions.$regex(objValue, queryValue); }
 
         // queryValue is either a native value or a normal object
         // Basic matching is possible
