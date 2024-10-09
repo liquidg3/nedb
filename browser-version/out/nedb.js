@@ -1342,7 +1342,7 @@
             // For a basic match
             usableQueryKeys = [];
             Object.keys(query).forEach(function (k) {
-              if (typeof query[k] === 'string' || typeof query[k] === 'number' || typeof query[k] === 'boolean' || util.isDate(query[k]) || query[k] === null) {
+              if (typeof query[k] === 'string' || typeof query[k] === 'number' || typeof query[k] === 'boolean' || query[k] instanceof Date || query[k] === null) {
                 usableQueryKeys.push(k);
               }
             });
@@ -1387,7 +1387,7 @@
             docs.forEach(function (doc) {
               var valid = true;
               ttlIndexesFieldNames.forEach(function (i) {
-                if (doc[i] !== undefined && util.isDate(doc[i]) && Date.now() > doc[i].getTime() + self.ttlIndexes[i] * 1000) {
+                if (doc[i] !== undefined && doc[i] instanceof Date && Date.now() > doc[i].getTime() + self.ttlIndexes[i] * 1000) {
                   valid = false;
                 }
               });
@@ -2269,7 +2269,7 @@
           typeof obj === 'number' ||
           typeof obj === 'string' ||
           obj === null ||
-          (util.isDate(obj))) {
+          (obj instanceof Date)) {
           return obj;
         }
 
@@ -2302,7 +2302,7 @@
           typeof obj === 'number' ||
           typeof obj === 'string' ||
           obj === null ||
-          util.isDate(obj) ||
+          obj instanceof Date ||
           Array.isArray(obj));
       }
 
@@ -2367,8 +2367,8 @@
         if (typeof b === 'boolean') { return typeof a === 'boolean' ? compareNSB(a, b) : 1; }
 
         // Dates
-        if (util.isDate(a)) { return util.isDate(b) ? compareNSB(a.getTime(), b.getTime()) : -1; }
-        if (util.isDate(b)) { return util.isDate(a) ? compareNSB(a.getTime(), b.getTime()) : 1; }
+        if (a instanceof Date) { return b instanceof Date ? compareNSB(a.getTime(), b.getTime()) : -1; }
+        if (b instanceof Date) { return a instanceof Date ? compareNSB(a.getTime(), b.getTime()) : 1; }
 
         // Arrays (first element is most significant and so on)
         if (Array.isArray(a)) { return Array.isArray(b) ? compareArrays(a, b) : -1; }
@@ -2689,7 +2689,7 @@
           b === null || typeof b === 'string' || typeof b === 'boolean' || typeof b === 'number') { return a === b; }
 
         // Dates
-        if (util.isDate(a) || util.isDate(b)) { return util.isDate(a) && util.isDate(b) && a.getTime() === b.getTime(); }
+        if (a instanceof Date || b instanceof Date) { return a instanceof Date && b instanceof Date && a.getTime() === b.getTime(); }
 
         // Arrays (no match since arrays are used as a $in)
         // undefined (no match since they mean field doesn't exist and can't be serialized)
@@ -2717,8 +2717,8 @@
        * Check that two values are comparable
        */
       function areComparable(a, b) {
-        if (typeof a !== 'string' && typeof a !== 'number' && !util.isDate(a) &&
-          typeof b !== 'string' && typeof b !== 'number' && !util.isDate(b)) {
+        if (typeof a !== 'string' && typeof a !== 'number' && !a instanceof Date &&
+          typeof b !== 'string' && typeof b !== 'number' && !b instanceof Date) {
           return false;
         }
 
@@ -6129,7 +6129,7 @@
 /******/ 			id: moduleId,
 /******/ 			loaded: false
               /******/
-};
+            };
 
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
@@ -6140,7 +6140,7 @@
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
             /******/
-}
+          }
 
 
 /******/ 	// expose the modules object (__webpack_modules__)
@@ -6155,7 +6155,7 @@
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
           /******/
-})
+        })
 /************************************************************************/
 /******/([
 /* 0 */
@@ -6576,7 +6576,7 @@
             module.exports = exports['default'];
 
             /***/
-},
+          },
 /* 1 */
 /***/ function (module, exports) {
 
@@ -7260,7 +7260,7 @@
             module.exports = exports['default'];
 
             /***/
-},
+          },
 /* 2 */
 /***/ function (module, exports, __webpack_require__) {
 
@@ -7569,7 +7569,7 @@
             module.exports = exports['default'];
 
             /***/
-},
+          },
 /* 3 */
 /***/ function (module, exports) {
 
@@ -7835,7 +7835,7 @@
             module.exports = exports['default'];
 
             /***/
-},
+          },
 /* 4 */
 /***/ function (module, exports, __webpack_require__) {
 
@@ -8198,7 +8198,7 @@
             module.exports = exports['default'];
 
             /***/
-}
+          }
 /******/])
       });
       ;
