@@ -1,8 +1,10 @@
+**This fork has been updated to deal with deprecation warnings in the latest versions on Nodejs.**
+
+## Original Readme: 👇
+
 <img src="http://i.imgur.com/9O1xHFb.png" style="width: 25%; height: 25%; float: left; ">
 
 ## The JavaScript Database
-
-**This fork has been updated to deal with deprecation warnings in the latest versions on Nodejs.**
 
 > :warning: :warning: :warning: **WARNING:** this library is no longer maintained, and may have bugs and security issues. Feel free to fork but no pull request or security alert will be answered.
 
@@ -286,10 +288,10 @@ db.findOne({
 
 The syntax is `{ field: { $op: value } }` where `$op` is any comparison operator:  
 
-* `$lt`,  `$lte`: less than, less than or equal
-* `$gt`,  `$gte`: greater than, greater than or equal
+* `$lt`,     `$lte`: less than, less than or equal
+* `$gt`,     `$gte`: greater than, greater than or equal
 * `$in`: member of. `value` must be an array of values
-* `$ne`,  `$nin`: not equal, not a member of
+* `$ne`,     `$nin`: not equal, not a member of
 * `$exists`: checks whether the document posses the property `field`. `value` should be true or false
 * `$regex`: checks whether a string is matched by the regular expression. Contrary to MongoDB, the use of `$options` with `$regex` is not supported, because it doesn't give you more power than regex flags. Basic queries are more readable so only use the `$regex` operator when you need to use another operator with it (see example below)
 
@@ -624,7 +626,7 @@ db.count({}, function(err, count) {
 * `query` is the same kind of finding query you use with `find` and `findOne`
 * `update` specifies how the documents should be modified. It is either a new document or a set of modifiers (you cannot use both together, it doesn't make sense!)
   + A new document will replace the matched docs
-  + The modifiers create the fields they need to modify if they don't exist, and you can apply them to subdocs. Available field modifiers are `$set` to change a field's value,  `$unset` to delete a field,  `$inc` to increment a field's value and `$min`/`$max` to change field's value, only if provided value is less/greater than current value. To work on arrays, you have `$push`,  `$pop`,  `$addToSet`,  `$pull`, and the special `$each` and `$slice`. See examples below for the syntax.
+  + The modifiers create the fields they need to modify if they don't exist, and you can apply them to subdocs. Available field modifiers are `$set` to change a field's value,  `$unset` to delete a field,  `$inc` to increment a field's value and `$min`/`$max` to change field's value, only if provided value is less/greater than current value. To work on arrays, you have `$push`,     `$pop`,     `$addToSet`,     `$pull`, and the special `$each` and `$slice`. See examples below for the syntax.
 * `options` is an object with two possible parameters
   + `multi` (defaults to `false`) which allows the modification of several documents if set to true
   + `upsert` (defaults to `false`) if you want to insert a new document corresponding to the `update` rules if your `query` doesn't match anything. If your `update` is a simple object with no modifiers, it is the inserted document. In the other case, the `query` is stripped from all operator recursively, and the `update` is applied to it.
@@ -992,6 +994,7 @@ If you fork and modify nedb, you can build the browser version from the sources,
 ## Performance
 
 ### Speed
+
 NeDB is not intended to be a replacement of large-scale databases such as MongoDB, and as such was not designed for speed. That said, it is still pretty fast on the expected datasets, especially if you use indexing. On a typical, not-so-fast dev machine, for a collection containing 10, 000 documents, with indexing:  
 * Insert: **10, 680 ops/s**
 * Find: **43, 290 ops/s**
